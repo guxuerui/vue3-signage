@@ -2,23 +2,39 @@
 interface Props {
   open: boolean
 }
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   open: false,
 })
 
 const emit = defineEmits<{
   (e: 'create', inputValue: string): void
-  (e: 'cancel'): void
+  (e: 'close'): void
 }>()
 
-const inputValue = $ref<string>('')
-const create = () => {
-  emit('create', inputValue)
+const vFocus = {
+  mounted: (el: any) => el.focus(),
 }
 
-function cancel() {
-  emit('cancel')
+const inputValue = ref<string>('')
+const modalRef = ref<HTMLElement | null>(null)
+
+const create = () => {
+  emit('create', inputValue.value)
 }
+
+function close() {
+  emit('close')
+}
+
+watch(() => props.open, (val) => {
+  if (!val)
+    inputValue.value = ''
+})
+
+onClickOutside(
+  modalRef,
+  () => close(),
+)
 </script>
 
 <template>
@@ -27,11 +43,11 @@ function cancel() {
       v-if="open"
       mx-auto px-6 pt-6 pb-4
       bg="black/50 dark:gray-800/50"
-      position-absolute
-      top-0 left-0 right-0 bottom-0
-      @keydown.esc="cancel"
+      position-absolute top-0 left-0 right-0
+      bottom-0
     >
       <div
+        ref="modalRef"
         position-absolute
         border="1 gray-400 dark:gray-800"
         bg="gray-200 dark:gray-800"
@@ -42,6 +58,7 @@ function cancel() {
         <input
           id="input"
           v-model="inputValue"
+          v-focus
           placeholder="What's the task name?"
           type="text"
           autocomplete="false"
@@ -55,7 +72,7 @@ function cancel() {
         >
 
         <div text-center pt-4>
-          <button class="m-3 text-sm btn" @click="cancel">
+          <button class="m-3 text-sm btn" @click="close">
             Cancel
           </button>
           <button class="m-3 text-sm btn" @click="create">
