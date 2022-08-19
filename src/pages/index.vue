@@ -39,13 +39,16 @@ const taskList = ref<TaskList[]>([
 ])
 const openModal = ref<boolean>(false)
 
-function createTask() {
+function createTask(name: string) {
+  if (!name)
+    return
   taskList.value.push({
     id: taskList.value.length + 1,
-    name: 'New Task',
+    name,
     progressing: false,
     completed: false,
   })
+  cancel()
 }
 
 function cancel() {
@@ -57,11 +60,12 @@ function cancel() {
   <div flex="~">
     <div w-80 min-h-screen pb-10 text-center border="r-1 gray-400/40">
       <Footer />
-      <div text-4xl>
+      <div text-4xl my-5>
         SIGNAGE
       </div>
       <div
-        btn w-50 py-3 mt-4 transition rounded-2
+        btn w-50 py-1 transition rounded-2
+        text-3xl
         class="bg-#e86/70 hover:bg-#e86/90"
         @click="openModal = true"
       >
@@ -92,7 +96,52 @@ function cancel() {
           REMOVE TASK
         </button>
       </div>
-      <CreateModal :open="openModal" @create="createTask" @cancel="cancel" />
+      <div pa-8 grid grid-cols-3>
+        <div pa-4 mr-4 bg="gray-400/10" rounded-2 text-center>
+          <h2 text-2xl text-left>
+            To Do
+          </h2>
+          <div
+            btn w-60 transition rounded-2
+            text-3xl mt-4
+            class="bg-#e86/70 hover:bg-#e86/90"
+            @click="openModal = true"
+          >
+            <div i-carbon-add mx-auto />
+          </div>
+        </div>
+        <div pa-4 mr-4 bg="gray-400/10" rounded-2 text-center>
+          <h2 text-2xl text-left>
+            In Progress
+          </h2>
+          <div
+            btn w-60 transition rounded-2
+            text-3xl mt-4
+            class="bg-#e86/70 hover:bg-#e86/90"
+            @click="openModal = true"
+          >
+            <div i-carbon-add mx-auto />
+          </div>
+        </div>
+        <div pa-4 mr-4 bg="gray-400/10" rounded-2 text-center>
+          <h2 text-2xl text-left>
+            Completed
+          </h2>
+          <div
+            btn w-60 transition rounded-2
+            text-3xl mt-4
+            class="bg-#e86/70 hover:bg-#e86/90"
+            @click="openModal = true"
+          >
+            <div i-carbon-add mx-auto />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+  <CreateModal
+    :open="openModal"
+    @create="createTask"
+    @close="cancel"
+  />
 </template>
