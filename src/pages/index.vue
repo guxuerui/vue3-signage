@@ -113,6 +113,7 @@ onMounted(() => {
           ALL TASKS
         </div>
         <button
+          v-if="taskList.length"
           btn rounded-2 transition ml-4 py-2
           bg="transparent"
           hover:bg="#e86a3d"
@@ -209,6 +210,9 @@ onMounted(() => {
             </p>
           </div>
         </div>
+      </div>
+      <div v-else bg-blue w-27 mt-4 p="x-2 y-1" rounded-5 text-white>
+        No tasks yet
       </div>
     </div>
   </div>
