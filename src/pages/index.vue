@@ -19,12 +19,16 @@ useHead({
 
 const taskList = ref<TaskList[]>([])
 const openModal = ref<boolean>(false)
+const isDuplicatedName = ref<boolean>(false)
 
 function createTask(name: string) {
   if (!name)
     return
 
-  taskList.value.push({
+  // Is there duplicate data
+  const haveDuplicate = useArraySome(taskList, task => task.name === name)
+  isDuplicatedName.value = haveDuplicate.value
+  !haveDuplicate.value && taskList.value.push({
     id: taskList.value.length + 1,
     name,
     progressing: false,
@@ -38,6 +42,7 @@ function createTask(name: string) {
 
 function cancel() {
   openModal.value = false
+  isDuplicatedName.value = false
 }
 
 const selectTaskId = ref<number>(0)
@@ -154,6 +159,7 @@ function selectTask(task: TaskList) {
   </div>
   <CreateModal
     :open="openModal"
+    :is-duplicated-name="isDuplicatedName"
     @create="createTask"
     @close="cancel"
   />

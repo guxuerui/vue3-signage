@@ -1,9 +1,11 @@
 <script setup lang="ts">
 interface Props {
   open: boolean
+  isDuplicatedName: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
   open: false,
+  isDuplicatedName: false,
 })
 
 const emit = defineEmits<{
@@ -70,6 +72,9 @@ onClickOutside(
           outline="none active:none"
           @keydown.enter="create"
         >
+        <p v-if="isDuplicatedName" mt-4 text-red>
+          This task already exists!
+        </p>
 
         <div text-center pt-4>
           <button class="m-3 text-sm btn" @click="close">
