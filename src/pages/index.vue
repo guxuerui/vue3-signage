@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TaskList } from '~/types'
+import type { TaskList, Todo } from '~/types'
 // setup websit title
 const siteData = reactive({
   title: 'My Signage',
@@ -20,6 +20,7 @@ useHead({
 const taskList = ref<TaskList[]>([])
 const openModal = ref<boolean>(false)
 const isDuplicatedName = ref<boolean>(false)
+useStorage('signage-tasklist', taskList)
 
 function createTask(name: string) {
   if (!name)
@@ -46,9 +47,34 @@ function cancel() {
 }
 
 const selectTaskId = ref<number>(0)
+const todoList = ref<Todo[]>([])
+const doingList = ref<Todo[]>([])
+const doneList = ref<Todo[]>([])
 function selectTask(task: TaskList) {
   selectTaskId.value = task.id
+  todoList.value = task.todoList
+  doingList.value = task.doingList
+  doneList.value = task.doneList
 }
+
+function removeTask() {
+  taskList.value.splice(selectTaskId.value - 1, 1)
+  taskList.value.length >= 1 && selectTask(taskList.value[0])
+  if (taskList.value.length === 0) {
+    todoList.value = []
+    doingList.value = []
+    doneList.value = []
+  }
+}
+
+function createCurrenntTask(type: string) {
+  console.log(type)
+}
+
+onMounted(() => {
+  if (taskList.value.length)
+    selectTask(taskList.value[0])
+})
 </script>
 
 <template>
@@ -95,6 +121,7 @@ function selectTask(task: TaskList) {
           border="1 #e86a3d"
           text="#e86a3d"
           hover:text="#fff"
+          @click="removeTask"
         >
           REMOVE TASK
         </button>
@@ -108,13 +135,41 @@ function selectTask(task: TaskList) {
             btn transition rounded-2
             text-3xl mt-4
             class="bg-#e86/70 hover:bg-#e86/90 w-70%"
+            @click="createCurrenntTask('todo')"
+          >
+            <div i-carbon-add mx-auto />
+          </div>
+          <div
+            v-for="list in todoList"
+            :key="list.id"
+            mx-auto pa-4 my-4
+            rounded-3 border="1 gray-400/40"
+            class="w-70%"
+          >
+            <div flex="~" text-xl>
+              <div text-orange i-carbon-dot-mark />
+              <span>{{ list.title }}</span>
+            </div>
+            <p text-left text-gray pa-2>
+              {{ list.content }}
+            </p>
+          </div>
+        </div>
+        <div pa-4 mr-4 bg="gray-400/10" rounded-2 text-center>
+          <h2 text-2xl text-left>
+            In Progress
+          </h2>
+          <div
+            btn transition rounded-2
+            text-3xl mt-4
+            class="bg-#e86/70 hover:bg-#e86/90 w-70%"
             @click="openModal = true"
           >
             <div i-carbon-add mx-auto />
           </div>
           <div
-            v-for="list in 4"
-            :key="list"
+            v-for="list in doingList"
+            :key="list.id"
             mx-auto pa-4 my-4
             rounded-3 border="1 gray-400/40"
             class="w-70%"
@@ -130,28 +185,30 @@ function selectTask(task: TaskList) {
         </div>
         <div pa-4 mr-4 bg="gray-400/10" rounded-2 text-center>
           <h2 text-2xl text-left>
-            In Progress
+            Completed
           </h2>
           <div
-            btn w-60 transition rounded-2
+            btn transition rounded-2
             text-3xl mt-4
-            class="bg-#e86/70 hover:bg-#e86/90"
+            class="bg-#e86/70 hover:bg-#e86/90 w-70%"
             @click="openModal = true"
           >
             <div i-carbon-add mx-auto />
           </div>
-        </div>
-        <div pa-4 mr-4 bg="gray-400/10" rounded-2 text-center>
-          <h2 text-2xl text-left>
-            Completed
-          </h2>
           <div
-            btn w-60 transition rounded-2
-            text-3xl mt-4
-            class="bg-#e86/70 hover:bg-#e86/90"
-            @click="openModal = true"
+            v-for="list in doneList"
+            :key="list.id"
+            mx-auto pa-4 my-4
+            rounded-3 border="1 gray-400/40"
+            class="w-70%"
           >
-            <div i-carbon-add mx-auto />
+            <div flex="~" text-xl>
+              <div text-orange i-carbon-dot-mark />
+              <span>Title</span>
+            </div>
+            <p text-left text-gray pa-2>
+              Content
+            </p>
           </div>
         </div>
       </div>
