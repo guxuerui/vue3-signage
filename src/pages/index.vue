@@ -17,42 +17,32 @@ useHead({
   ],
 })
 
-const taskList = ref<TaskList[]>([
-  {
-    id: 1,
-    name: 'Task 1',
-    progressing: false,
-    completed: false,
-  },
-  {
-    id: 2,
-    name: 'Task 2',
-    progressing: false,
-    completed: false,
-  },
-  {
-    id: 3,
-    name: 'Task 3',
-    progressing: false,
-    completed: false,
-  },
-])
+const taskList = ref<TaskList[]>([])
 const openModal = ref<boolean>(false)
 
 function createTask(name: string) {
   if (!name)
     return
+
   taskList.value.push({
     id: taskList.value.length + 1,
     name,
     progressing: false,
     completed: false,
+    todoList: [],
+    doingList: [],
+    doneList: [],
   })
-  cancel()
+  taskList.value.length === 1 && selectTask(taskList.value[0])
 }
 
 function cancel() {
   openModal.value = false
+}
+
+const selectTaskId = ref<number>(0)
+function selectTask(task: TaskList) {
+  selectTaskId.value = task.id
 }
 </script>
 
@@ -66,7 +56,7 @@ function cancel() {
       <div
         btn w-50 py-1 transition rounded-2
         text-3xl
-        class="bg-#e86/70 hover:bg-#e86/90"
+        class="bg-gray/70 hover:bg-gray"
         @click="openModal = true"
       >
         <div i-carbon-add mx-auto />
@@ -75,7 +65,15 @@ function cancel() {
         v-for="item in taskList"
         :key="item.id"
         btn w-50 py-3 mt-4 transition rounded-2
-        class="bg-#e86a3d/80 hover:bg-#e86a3d"
+        text-xl text="hover:white dark:white"
+        class="hover:bg-#e86a3d/50"
+        :class="{
+          'bg-#e86a3d': selectTaskId === item.id,
+          'text-white': selectTaskId === item.id,
+          'text-black': selectTaskId !== item.id,
+          'bg-transparent': selectTaskId !== item.id,
+        }"
+        @click="selectTask(item)"
       >
         {{ item.name }}
       </div>
@@ -96,18 +94,33 @@ function cancel() {
           REMOVE TASK
         </button>
       </div>
-      <div pa-8 grid grid-cols-3>
+      <div v-if="taskList.length" pa-8 grid grid-cols-3>
         <div pa-4 mr-4 bg="gray-400/10" rounded-2 text-center>
           <h2 text-2xl text-left>
             To Do
           </h2>
           <div
-            btn w-60 transition rounded-2
+            btn transition rounded-2
             text-3xl mt-4
-            class="bg-#e86/70 hover:bg-#e86/90"
+            class="bg-#e86/70 hover:bg-#e86/90 w-70%"
             @click="openModal = true"
           >
             <div i-carbon-add mx-auto />
+          </div>
+          <div
+            v-for="list in 4"
+            :key="list"
+            mx-auto pa-4 my-4
+            rounded-3 border="1 gray-400/40"
+            class="w-70%"
+          >
+            <div flex="~" text-xl>
+              <div text-orange i-carbon-dot-mark />
+              <span>Title</span>
+            </div>
+            <p text-left text-gray pa-2>
+              Content
+            </p>
           </div>
         </div>
         <div pa-4 mr-4 bg="gray-400/10" rounded-2 text-center>
