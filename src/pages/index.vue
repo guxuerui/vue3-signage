@@ -67,9 +67,7 @@ function removeTask() {
   }
 }
 
-function createCurrenntTask(type: string) {
-  console.log(type)
-}
+function createCurrenntTask(type: string) {}
 
 onMounted(() => {
   if (taskList.value.length)
