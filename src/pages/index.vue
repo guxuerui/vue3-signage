@@ -39,6 +39,7 @@ function createTask(name: string) {
     doneList: [],
   })
   taskList.value.length === 1 && selectTask(taskList.value[0])
+  cancel()
 }
 
 function cancel() {
@@ -58,7 +59,8 @@ function selectTask(task: TaskList) {
 }
 
 function removeTask() {
-  taskList.value.splice(selectTaskId.value - 1, 1)
+  const currentIndex = useArrayFindIndex(taskList, task => task.id === selectTaskId.value)
+  taskList.value.splice(currentIndex.value, 1)
   taskList.value.length >= 1 && selectTask(taskList.value[0])
   if (taskList.value.length === 0) {
     todoList.value = []
