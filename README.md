@@ -1,7 +1,7 @@
 
 # ✔️ Task Signage - With Vue3.x
 
-<p align="center"><img src="./public/To_Do.png" style="zoom: 15%;" /></p>
+<p align="center"><img src="./public/To_Do.png" style="width: 200px" /></p>
 
 
 ## Features
@@ -9,6 +9,7 @@
 - [x] **Multiple Tasks**
   - [x] Adding as many tasks as you want
 - [x] **Dark mode or light mode**
+- [x] **Teleport modal**
 - [x] **Use reactivity Local Storage function: useLocalStorage()**
 - [x] **Remove task**
 - [x] **Modify task status at any time**
