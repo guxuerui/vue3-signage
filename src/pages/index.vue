@@ -32,8 +32,6 @@ function createTask(name: string) {
   !haveDuplicate.value && taskList.value.push({
     id: taskList.value.length + 1,
     name,
-    progressing: false,
-    completed: false,
     todoList: [],
     doingList: [],
     doneList: [],
@@ -51,6 +49,7 @@ const selectTaskId = ref<number>(0)
 const todoList = ref<Todo[]>([])
 const doingList = ref<Todo[]>([])
 const doneList = ref<Todo[]>([])
+const currentIndex = useArrayFindIndex(taskList, task => task.id === selectTaskId.value)
 function selectTask(task: TaskList) {
   selectTaskId.value = task.id
   todoList.value = task.todoList
@@ -59,7 +58,6 @@ function selectTask(task: TaskList) {
 }
 
 function removeTask() {
-  const currentIndex = useArrayFindIndex(taskList, task => task.id === selectTaskId.value)
   taskList.value.splice(currentIndex.value, 1)
   taskList.value.length >= 1 && selectTask(taskList.value[0])
   if (taskList.value.length === 0) {
@@ -69,7 +67,47 @@ function removeTask() {
   }
 }
 
-function createCurrenntTask(type: string) {}
+const openTaskModal = ref<boolean>(false)
+const taskType = ref<string>('todo')
+function addTask(type: string) {
+  taskType.value = type
+  openTaskModal.value = true
+}
+
+function createCurrenntTask(form: Todo) {
+  switch (taskType.value) {
+    case 'todo':
+      taskList.value[currentIndex.value].todoList.push({
+        id: taskList.value[currentIndex.value].todoList.length + 1,
+        title: form.title,
+        content: form.content,
+        progressing: false,
+        completed: false,
+      })
+      break
+    case 'doing':
+      taskList.value[currentIndex.value].doingList.push({
+        id: taskList.value[currentIndex.value].doingList.length + 1,
+        title: form.title,
+        content: form.content,
+        progressing: true,
+        completed: false,
+      })
+      break
+    case 'done':
+      taskList.value[currentIndex.value].doneList.push({
+        id: taskList.value[currentIndex.value].doneList.length + 1,
+        title: form.title,
+        content: form.content,
+        progressing: false,
+        completed: true,
+      })
+      break
+    default:
+      break
+  }
+  selectTask(taskList.value[currentIndex.value])
+}
 
 onMounted(() => {
   if (taskList.value.length)
@@ -136,7 +174,7 @@ onMounted(() => {
             btn transition rounded-2
             text-3xl mt-4
             class="bg-#e86/70 hover:bg-#e86/90 w-70%"
-            @click="createCurrenntTask('todo')"
+            @click="addTask('todo')"
           >
             <div i-carbon-add mx-auto />
           </div>
@@ -223,5 +261,10 @@ onMounted(() => {
     :is-duplicated-name="isDuplicatedName"
     @create="createTask"
     @close="cancel"
+  />
+  <CreateTask
+    :open="openTaskModal"
+    @confirm="createCurrenntTask($event)"
+    @close="openTaskModal = false"
   />
 </template>

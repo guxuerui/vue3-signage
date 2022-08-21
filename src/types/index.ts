@@ -1,14 +1,14 @@
 export interface Todo {
-  id: number
+  id?: number
   title: string
   content: string
+  progressing?: boolean
+  completed?: boolean
 }
 
 export interface TaskList {
   id: number
   name: string
-  progressing: boolean
-  completed: boolean
   todoList: Todo[]
   doingList: Todo[]
   doneList: Todo[]
