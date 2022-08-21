@@ -77,8 +77,8 @@ function addTask(type: string) {
 function createCurrenntTask(form: Todo) {
   switch (taskType.value) {
     case 'todo':
-      taskList.value[currentIndex.value].todoList.push({
-        id: taskList.value[currentIndex.value].todoList.length + 1,
+      todoList.value.push({
+        id: todoList.value.length + 1,
         title: form.title,
         content: form.content,
         progressing: false,
@@ -86,8 +86,8 @@ function createCurrenntTask(form: Todo) {
       })
       break
     case 'doing':
-      taskList.value[currentIndex.value].doingList.push({
-        id: taskList.value[currentIndex.value].doingList.length + 1,
+      doingList.value.push({
+        id: doingList.value.length + 1,
         title: form.title,
         content: form.content,
         progressing: true,
@@ -95,8 +95,8 @@ function createCurrenntTask(form: Todo) {
       })
       break
     case 'done':
-      taskList.value[currentIndex.value].doneList.push({
-        id: taskList.value[currentIndex.value].doneList.length + 1,
+      doneList.value.push({
+        id: doneList.value.length + 1,
         title: form.title,
         content: form.content,
         progressing: false,
@@ -107,7 +107,48 @@ function createCurrenntTask(form: Todo) {
       break
   }
   openTaskModal.value = false
-  selectTask(taskList.value[currentIndex.value])
+}
+
+let spliceTask = $ref<Todo[]>([])
+function startTask(index: number) {
+  spliceTask = todoList.value.splice(index, 1)
+  spliceTask[0].progressing = true
+  doingList.value.push(spliceTask[0])
+}
+
+function completeTask(index: number, type: string) {
+  switch (type) {
+    case 'todo':
+      spliceTask = todoList.value.splice(index, 1)
+      spliceTask[0].progressing = false
+      spliceTask[0].completed = true
+      doneList.value.push(spliceTask[0])
+      break
+    case 'doing':
+      spliceTask = doingList.value.splice(index, 1)
+      spliceTask[0].progressing = false
+      spliceTask[0].completed = true
+      doneList.value.push(spliceTask[0])
+      break
+    default:
+      break
+  }
+}
+
+function delTask(index: number, type: string) {
+  switch (type) {
+    case 'todo':
+      todoList.value.splice(index, 1)
+      break
+    case 'doing':
+      doingList.value.splice(index, 1)
+      break
+    case 'done':
+      doneList.value.splice(index, 1)
+      break
+    default:
+      break
+  }
 }
 
 onMounted(() => {
@@ -169,18 +210,27 @@ onMounted(() => {
       <div v-if="taskList.length" pa-8 grid grid-cols-3>
         <TasksList
           title="To Do"
+          type="todo"
           :task-list="todoList"
-          @click="addTask('todo')"
+          @add="addTask($event)"
+          @start="startTask"
+          @complete="completeTask"
+          @del="delTask"
         />
         <TasksList
           title="In Progress"
+          type="doing"
           :task-list="doingList"
-          @click="addTask('doing')"
+          @add="addTask($event)"
+          @complete="completeTask"
+          @del="delTask"
         />
         <TasksList
           title="Completed"
+          type="done"
           :task-list="doneList"
-          @click="addTask('done')"
+          @add="addTask($event)"
+          @del="delTask"
         />
       </div>
       <div v-else bg-blue w-27 mt-4 p="x-2 y-1" rounded-5 text-white>
