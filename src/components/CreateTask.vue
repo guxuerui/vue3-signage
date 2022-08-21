@@ -23,7 +23,7 @@ const inputForm = ref<Todo>({
 })
 const modalRef = ref<HTMLElement | null>(null)
 
-const create = () => {
+const confirm = () => {
   emit('confirm', inputForm.value)
 }
 
@@ -92,13 +92,14 @@ onClickOutside(
           bg="transparent"
           border="~ rounded gray-400 dark:gray-700"
           outline="none active:none"
+          @keydown.enter="confirm"
         >
 
         <div text-center pt-4>
           <button class="m-3 text-sm btn" @click="close">
             Cancel
           </button>
-          <button class="m-3 text-sm btn" @click="create">
+          <button class="m-3 text-sm btn" @click="confirm">
             Confirm
           </button>
         </div>
