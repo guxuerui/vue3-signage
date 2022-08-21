@@ -9,6 +9,14 @@ withDefaults(defineProps<Props>(), {
   title: '',
   taskList: () => [],
 })
+
+function getIndicatorClass(list: Todo) {
+  if (list.progressing)
+    return 'text-orange'
+  if (list.completed)
+    return 'text-green'
+  return 'text-gray'
+}
 </script>
 
 <template>
@@ -31,7 +39,7 @@ withDefaults(defineProps<Props>(), {
       class="w-70%"
     >
       <div flex="~" text-xl>
-        <div text-orange i-carbon-dot-mark />
+        <div :class="getIndicatorClass(list)" i-carbon-dot-mark />
         <span>{{ list.title }}</span>
       </div>
       <p text-left text-gray pa-2>
