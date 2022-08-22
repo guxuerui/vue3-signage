@@ -32,3 +32,12 @@ https://user-images.githubusercontent.com/23629097/185799357-3360db0e-11f7-4f22-
 
 - [ ] *Draggable*
 - [ ] *Make tasks editable*
+
+## Clone to local
+
+```bash
+git clone git@github.com:guxuerui/vue3-signage.git
+cd vue3-signage
+pnpm i # If you don't have pnpm installed, run: npm install -g pnpm
+pnpm run dev
+```
