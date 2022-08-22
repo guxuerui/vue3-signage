@@ -17,6 +17,7 @@ const emit = defineEmits<{
   (e: 'start', index: number): void
   (e: 'complete', index: number, type: string): void
   (e: 'del', index: number, type: string): void
+  (e: 'edit', index: number, type: string, list: Todo): void
 }>()
 
 function getIndicatorClass(list: Todo) {
@@ -47,6 +48,7 @@ function getIndicatorClass(list: Todo) {
       mx-auto pa-4 my-4
       rounded-3 border="1 gray-400/40"
       class="w-70%"
+      @dblclick="emit('edit', i, type, list)"
     >
       <div flex="~" text-xl>
         <div :class="getIndicatorClass(list)" i-carbon-dot-mark />

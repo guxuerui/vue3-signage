@@ -3,9 +3,11 @@ import type { Todo } from '~/types'
 
 interface Props {
   open: boolean
+  taskForm?: Todo
 }
 const props = withDefaults(defineProps<Props>(), {
   open: false,
+  taskFrom: () => null,
 })
 
 const emit = defineEmits<{
@@ -31,12 +33,16 @@ function close() {
   emit('close')
 }
 
-watch(() => props.open, (val) => {
-  if (!val) {
+watch([() => props.open, () => props.taskForm], ([newOpen, newForm]) => {
+  if (!newOpen) {
     inputForm.value = {
       title: '',
       content: '',
     }
+  }
+  if (newForm) {
+    const { title, content } = newForm
+    inputForm.value = { title, content }
   }
 })
 

@@ -13,6 +13,7 @@
 - [x] **Use reactivity Local Storage function: useLocalStorage()**
 - [x] **Remove task**
 - [x] **Modify task status at any time**
+- [x] **edit task as any time: use dblClick**
 
 ## Preview
 
@@ -31,7 +32,6 @@ https://user-images.githubusercontent.com/23629097/185799357-3360db0e-11f7-4f22-
 ## Todo
 
 - [ ] *Draggable*
-- [ ] *Make tasks editable*
 
 ## Clone to local
 

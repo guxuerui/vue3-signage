@@ -74,39 +74,80 @@ function addTask(type: string) {
   openTaskModal.value = true
 }
 
+const currTaskForm = ref<any>(null)
+const currentTaskIndex = ref(0)
 function createCurrenntTask(form: Todo) {
-  switch (taskType.value) {
+  if (currTaskForm.value) { updateTask(taskType.value, form) }
+  else {
+    switch (taskType.value) {
+      case 'todo':
+        todoList.value.push({
+          id: todoList.value.length + 1,
+          title: form.title,
+          content: form.content,
+          progressing: false,
+          completed: false,
+        })
+        break
+      case 'doing':
+        doingList.value.push({
+          id: doingList.value.length + 1,
+          title: form.title,
+          content: form.content,
+          progressing: true,
+          completed: false,
+        })
+        break
+      case 'done':
+        doneList.value.push({
+          id: doneList.value.length + 1,
+          title: form.title,
+          content: form.content,
+          progressing: false,
+          completed: true,
+        })
+        break
+      default:
+        break
+    }
+  }
+  closeTaskModal()
+}
+
+function editTask(index: number, type: string, list: Todo) {
+  addTask(type)
+  currentTaskIndex.value = index
+  currTaskForm.value = list
+}
+
+function updateTask(type: string, form: Todo) {
+  switch (type) {
     case 'todo':
-      todoList.value.push({
-        id: todoList.value.length + 1,
-        title: form.title,
-        content: form.content,
-        progressing: false,
-        completed: false,
-      })
+      todoList.value[currentTaskIndex.value] = Object.assign(
+        todoList.value[currentTaskIndex.value],
+        form,
+      )
       break
     case 'doing':
-      doingList.value.push({
-        id: doingList.value.length + 1,
-        title: form.title,
-        content: form.content,
-        progressing: true,
-        completed: false,
-      })
+      doingList.value[currentTaskIndex.value] = Object.assign(
+        doingList.value[currentTaskIndex.value],
+        form,
+      )
       break
     case 'done':
-      doneList.value.push({
-        id: doneList.value.length + 1,
-        title: form.title,
-        content: form.content,
-        progressing: false,
-        completed: true,
-      })
+      doneList.value[currentTaskIndex.value] = Object.assign(
+        doneList.value[currentTaskIndex.value],
+        form,
+      )
       break
     default:
       break
   }
+}
+
+function closeTaskModal() {
   openTaskModal.value = false
+  currTaskForm.value = null
 }
 
 let spliceTask = $ref<Todo[]>([])
@@ -216,6 +257,7 @@ onMounted(() => {
           @start="startTask"
           @complete="completeTask"
           @del="delTask"
+          @edit="editTask"
         />
         <TasksList
           title="In Progress"
@@ -224,6 +266,7 @@ onMounted(() => {
           @add="addTask($event)"
           @complete="completeTask"
           @del="delTask"
+          @edit="editTask"
         />
         <TasksList
           title="Completed"
@@ -231,6 +274,7 @@ onMounted(() => {
           :task-list="doneList"
           @add="addTask($event)"
           @del="delTask"
+          @edit="editTask"
         />
       </div>
       <div v-else bg-blue w-27 mt-4 p="x-2 y-1" rounded-5 text-white>
@@ -246,7 +290,8 @@ onMounted(() => {
   />
   <CreateTask
     :open="openTaskModal"
+    :task-form="currTaskForm"
     @confirm="createCurrenntTask($event)"
-    @close="openTaskModal = false"
+    @close="closeTaskModal"
   />
 </template>
