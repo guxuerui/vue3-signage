@@ -192,6 +192,22 @@ function delTask(index: number, type: string) {
   }
 }
 
+// watch todoList state
+watchEffect(() => {
+  todoList.value.forEach((i: Todo) => {
+    i.progressing = false
+    i.completed = false
+  })
+  doingList.value.forEach((i: Todo) => {
+    i.progressing = true
+    i.completed = false
+  })
+  doneList.value.forEach((i: Todo) => {
+    i.progressing = false
+    i.completed = true
+  })
+})
+
 onMounted(() => {
   if (taskList.value.length)
     selectTask(taskList.value[0])
@@ -199,7 +215,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div flex="~">
+  <div flex="~" class="font-mnb">
     <div w-80 min-h-screen pb-10 text-center border="r-1 gray-400/40">
       <Footer />
       <div text-4xl my-5>
@@ -218,9 +234,9 @@ onMounted(() => {
         :key="item.id"
         btn w-50 py-3 mt-4 transition rounded-2
         text-xl text="hover:white dark:white"
-        class="hover:bg-#e86a3d/50"
+        class="hover:bg-#125abe/50"
         :class="{
-          'bg-#e86a3d': selectTaskId === item.id,
+          'bg-#125abe': selectTaskId === item.id,
           'text-white': selectTaskId === item.id,
           'text-black': selectTaskId !== item.id,
           'bg-transparent': selectTaskId !== item.id,
@@ -239,9 +255,9 @@ onMounted(() => {
           v-if="taskList.length"
           btn rounded-2 transition ml-4 py-2
           bg="transparent"
-          hover:bg="#e86a3d"
-          border="1 #e86a3d"
-          text="#e86a3d"
+          hover:bg="#125abe"
+          border="1 #125abe"
+          text="#125abe"
           hover:text="#fff"
           @click="removeTask"
         >
