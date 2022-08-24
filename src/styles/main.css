@@ -1,3 +1,19 @@
+@font-face {
+  font-family: 'MNB';
+  font-style: normal;
+  src: url('../../public/font/MapleMono-Bold.ttf');
+}
+@font-face {
+  font-family: 'MNBI';
+  font-style: italic;
+  src: url('../../public/font/MapleMono-BoldItalic.ttf');
+}
+.font-mnb {
+  font-family: MNB;
+}
+.font-mnbi {
+  font-family: MNBI;
+}
 html,
 body,
 #app {
