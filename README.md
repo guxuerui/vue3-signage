@@ -14,6 +14,7 @@
 - [x] **Remove task**
 - [x] **Modify task status at any time**
 - [x] **edit task as any time: use dblClick**
+- [x] **Task draggable**
 
 ## Preview
 
@@ -28,10 +29,7 @@ https://user-images.githubusercontent.com/23629097/185799357-3360db0e-11f7-4f22-
 - [Vueuse](https://vueuse.org)
 - [Vitesse-lite](https://github.com/antfu/vitesse-lite)
 - [Typescript](https://www.typescriptlang.org/)
-
-## Todo
-
-- [ ] *Draggable*
+- [Vuedraggable](https://github.com/SortableJS/vue.draggable.next)
 
 ## Clone to local
 
