@@ -25,11 +25,13 @@ https://user-images.githubusercontent.com/23629097/186464963-102a7928-a76a-4103-
 ## Dependencies
 
 - [Vue3.x](https://cn.vuejs.org/guide/introduction.html)
-- [Vite](https://vitejs.dev/guide/)
+- [Vite](https://vitejs.dev/guide)
 - [Vueuse](https://vueuse.org)
 - [Vitesse-lite](https://github.com/antfu/vitesse-lite)
-- [Typescript](https://www.typescriptlang.org/)
+- [Typescript](https://www.typescriptlang.org)
 - [Vuedraggable](https://github.com/SortableJS/vue.draggable.next)
+- [UnoCss](https://uno.antfu.me)
+- [Icones](https://icones.js.org)
 
 ## Clone to local
 
