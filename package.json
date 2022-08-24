@@ -15,7 +15,8 @@
     "@vueuse/core": "^9.0.0",
     "@vueuse/head": "^0.7.9",
     "vue": "^3.2.37",
-    "vue-router": "^4.1.2"
+    "vue-router": "^4.1.2",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.25.2",
