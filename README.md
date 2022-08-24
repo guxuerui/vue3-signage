@@ -19,8 +19,6 @@
 ## Preview
 
 
-https://user-images.githubusercontent.com/23629097/185799357-3360db0e-11f7-4f22-bd19-4b0e348cf045.mov
-
 
 ## Dependencies
 
