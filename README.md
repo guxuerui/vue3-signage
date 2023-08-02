@@ -3,7 +3,6 @@
 
 <p align="center"><img src="./public/To_Do.png" style="width: 200px" /></p>
 
-
 ## Features
 
 - [x] **Multiple Tasks**
@@ -18,9 +17,7 @@
 
 ## Preview
 
-
-https://user-images.githubusercontent.com/23629097/186464963-102a7928-a76a-4103-b84a-05f9e356164c.mov
-
+<https://user-images.githubusercontent.com/23629097/186464963-102a7928-a76a-4103-b84a-05f9e356164c.mov>
 
 ## Dependencies
 
@@ -33,11 +30,14 @@ https://user-images.githubusercontent.com/23629097/186464963-102a7928-a76a-4103-
 - [UnoCss](https://uno.antfu.me)
 - [Icones](https://icones.js.org)
 
-## Clone to local
+## Use
 
 ```bash
-git clone git@github.com:guxuerui/vue3-signage.git
-cd vue3-signage
-pnpm i # If you don't have pnpm installed, run: npm install -g pnpm
-pnpm run dev
+1. git clone git@github.com:guxuerui/vue3-signage.git
+
+2. cd vue3-signage
+
+3. pnpm i # If you don't have pnpm installed, run: npm install -g pnpm
+
+4. pnpm run dev
 ```
